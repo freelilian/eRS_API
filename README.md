@@ -2,9 +2,10 @@
 
 ## Overview
 
-This directory contains code for the running the recommender algorithms server. This server has been
-separated from the main server to isolate large dependencies. The `/preferences`, `/latent_features`, and `/emotions` endpoints
-accepts a series of ratings and outputs recommendations, 2 latent features, and 2 emotions for visualization. 
+This directory contains code for running the recommender algorithms server. This server has been
+separated from the main server to isolate large dependencies. The `/preferences`, `/latent_features`, 
+and `/emotions` endpoints accept a series of ratings and outputs recommendations, 2 latent features, 
+and 2 emotions, the latent features and emotions are used for visualization. 
 See `tests/test_ratings.json` for example ratings schema.
 
 ## Usage
