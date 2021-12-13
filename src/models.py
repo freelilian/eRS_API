@@ -68,8 +68,13 @@ class EmotionalSignature:
     Represents the latent feature values for visualization
     """
     item_id: str
-    emotion1: float
-    emotion2: float 
+    # emotion1: float
+    # emotion2: float 
+    ############
+    emotion1_name: str
+    emotion1_val: float
+    emotion2_name: str 
+    emotion2_val: float 
 
 @dataclass
 class Event:

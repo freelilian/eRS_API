@@ -72,16 +72,18 @@ def get_features_for_viz(item_ids: List[str], feature_type: str):
         rec_variance_sorted = rec_variance.sort_values(ascending = False)
             # pandas.core.series.Series
         largest_variance_emotions = rec_variance_sorted.index.values[:2]
+        # print(largest_variance_emotions)
+            # ['(emotion1)', '(emotion1)'], print a list of emotion names, 2 elements
         rec_two_emotions_df = rec_emotions[largest_variance_emotions]
         # print(rec_two_emotions_df)
             # ['item', (emotion1), (emotion1)]
         columns = np.insert(largest_variance_emotions, 0, 'item')
         rec_two_emotions_df = rec_emotions[columns]
+        # print(rec_two_emotions_df.columns)
      
-        
         viz_values = []
         for index, row in rec_two_emotions_df.iterrows():
-            viz_values.append(EmotionalSignature(str(np.int64(row['item'])), row.iloc[1], row.iloc[2]))
+            viz_values.append(EmotionalSignature(str(np.int64(row['item'])), largest_variance_emotions[0], row.iloc[1], largest_variance_emotions[1], row.iloc[2]))
     
         return viz_values
         
@@ -250,7 +252,7 @@ def predict_items_diversified_by_weighted_emotion(ratings: List[Rating], user_id
   
     
 if __name__ == '__main__':
-    fullpath_test = os.path.join(os.path.dirname(__file__), './eRSalgs/testing_rating_rated_items_extracted/ratings_set6_rated_only_Bart.csv')
+    fullpath_test = os.path.join(os.path.dirname(__file__), './eRSalgs/testing_rating_rated_items_extracted/ratings_set6_rated_only_Shahan.csv')
     liveUserID = 'Bart'
     ratings_liveUser = pd.read_csv(fullpath_test, encoding='latin1')
     #print(ratings_liveUser.head(20))
@@ -262,6 +264,7 @@ if __name__ == '__main__':
 
     ## starting calling the methods
     recommendations = predict_user_topN(ratings, liveUserID)
+    print('1. Traditional top-N recommendations')
     print(recommendations)
     latent_features = get_features_for_viz(recommendations, 'latent feature')
     print(latent_features)
@@ -270,24 +273,28 @@ if __name__ == '__main__':
     print()
     
     recommendations = predict_items_diversified_by_latent_feature(ratings, liveUserID)
+    print('2. Diversified by latent features')
     print(recommendations)
     latent_features = get_features_for_viz(recommendations, 'latent feature')
     print(latent_features)    
     print()
     
     recommendations = predict_items_diversified_by_weighted_latent_feature(ratings, liveUserID)
+    print('3. Diversified by weithged latent features')
     print(recommendations)
     latent_features = get_features_for_viz(recommendations, 'latent feature')
     print(latent_features)    
     print()
     
     recommendations = predict_items_diversified_by_emotion(ratings, liveUserID)
+    print('4. Diversified by emotions')
     print(recommendations)
     emotions = get_features_for_viz(recommendations, 'emotional signature')
     print(emotions)    
     print()
     
     recommendations = predict_items_diversified_by_weighted_emotion(ratings, liveUserID)
+    print('5. Diversified by weithged emotions')
     print(recommendations)
     emotions = get_features_for_viz(recommendations, 'emotional signature')
     print(emotions)    
