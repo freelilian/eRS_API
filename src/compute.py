@@ -252,7 +252,7 @@ def predict_items_diversified_by_weighted_emotion(ratings: List[Rating], user_id
   
     
 if __name__ == '__main__':
-    fullpath_test = os.path.join(os.path.dirname(__file__), './eRSalgs/testing_rating_rated_items_extracted/ratings_set6_rated_only_Shahan.csv')
+    fullpath_test = os.path.join(os.path.dirname(__file__), './eRSalgs/testing_rating_rated_items_extracted/ratings_set6_rated_only_Bart.csv')
     liveUserID = 'Bart'
     ratings_liveUser = pd.read_csv(fullpath_test, encoding='latin1')
     #print(ratings_liveUser.head(20))
