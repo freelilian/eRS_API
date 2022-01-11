@@ -2,7 +2,7 @@
 compute.py
 """
 from typing import List
-from models import Rating, Preference, LatentFeature, EmotionalSignature
+from models import Rating, Recommendation, Preference, LatentFeature, EmotionalSignature
 
 import eRSalgs.eRS_recommender as eRS
 import eRSalgs.diversification as div
@@ -15,7 +15,7 @@ import os
 def get_RSSA_preds(ratings: List[Rating], user_id) -> pd.DataFrame:
 
     new_ratings = pd.Series(rating.rating for rating in ratings)
-    rated_items = np.array([np.int64(rating.item_id) for rating in ratings])
+    rated_items = np.array([np.int64(rating.movielensId) for rating in ratings])
     
     data_path = os.path.join(os.path.dirname(__file__), './eRSalgs/data/eRS_item_popularity.csv')
     eRS_item_popularity = pd.read_csv(data_path) 
@@ -34,11 +34,12 @@ def get_RSSA_preds(ratings: List[Rating], user_id) -> pd.DataFrame:
     return RSSA_preds_of_noRatedItems, trained_MF_model
         # return trained_MF_model since it will be needed in the diversification to extract the latent features
 
-def get_features_for_viz(item_ids: List[str], feature_type: str):
-    # item_ids: nd.array
+def get_features_for_viz(recommendations: List[Recommendation], feature_type: str):
+    # recommendations: nd.array
     # feature_type: string either 'latent feature' or 'emotional signature'
     data_path = setpath.setpath()
-    item_ids = np.asarray(item_ids)
+    # item_ids = np.asarray(recommendations)
+    item_ids = np.array([np.int64(recommendation.movielensId) for recommendation in recommendations])
     item_ids = item_ids.astype(int)
         
     # print(type(item_ids))
@@ -106,7 +107,7 @@ def predict_user_topN(ratings: List[Rating], user_id) -> List[str]:
     recommendations = []
     for index, row in recs_topN_discounted.iterrows():
         # recommendations.append(Preference(str(np.int64(row['item'])), 'top_n'))
-        recommendations.append(str(np.int64(row['item'])))
+        recommendations.append(Recommendation(str(np.int64(row['item']))))
         
     return recommendations
     # *** Also needs to return vectors of the recommendations for viz
@@ -141,7 +142,7 @@ def predict_items_diversified_by_latent_feature(ratings: List[Rating], user_id) 
     recommendations = []
     for index, row in rec_diverseFeature.iterrows():
         # recommendations.append(Preference(str(np.int64(row['item'])), 'top_n'))
-        recommendations.append(str(np.int64(row['item'])))
+        recommendations.append(Recommendation(str(np.int64(row['item']))))
         
     return recommendations
     # *** Also needs to return vectors of the recommendations for viz
@@ -176,7 +177,7 @@ def predict_items_diversified_by_weighted_latent_feature(ratings: List[Rating], 
     recommendations = []
     for index, row in rec_diverseFeatureW.iterrows():
         # recommendations.append(Preference(str(np.int64(row['item'])), 'top_n'))
-        recommendations.append(str(np.int64(row['item'])))
+        recommendations.append(Recommendation(str(np.int64(row['item']))))
         
     return recommendations
     # *** Also needs to return vectors of the recommendations for viz
@@ -210,7 +211,7 @@ def predict_items_diversified_by_emotion(ratings: List[Rating], user_id) -> List
     recommendations = []
     for index, row in rec_diverseEmotion.iterrows():
         # recommendations.append(Preference(str(np.int64(row['item'])), 'top_n'))
-        recommendations.append(str(np.int64(row['item'])))
+        recommendations.append(Recommendation(str(np.int64(row['item']))))
  
     return recommendations
     # *** Also needs to return vectors of the recommendations for viz
@@ -244,7 +245,7 @@ def predict_items_diversified_by_weighted_emotion(ratings: List[Rating], user_id
     recommendations = []
     for index, row in rec_diverseEmotion.iterrows():
         # recommendations.append(Preference(str(np.int64(row['item'])), 'top_n'))
-        recommendations.append(str(np.int64(row['item'])))
+        recommendations.append(Recommendation(str(np.int64(row['item']))))
  
     return recommendations
     # *** Also needs to return vectors of the recommendations for viz
@@ -252,7 +253,7 @@ def predict_items_diversified_by_weighted_emotion(ratings: List[Rating], user_id
   
     
 if __name__ == '__main__':
-    fullpath_test = os.path.join(os.path.dirname(__file__), './eRSalgs/testing_rating_rated_items_extracted/ratings_set6_rated_only_Bart.csv')
+    fullpath_test = os.path.join(os.path.dirname(__file__), './eRSalgs/testing_rating_rated_items_extracted/ratings_set6_rated_only_Shahan.csv')
     liveUserID = 'Bart'
     ratings_liveUser = pd.read_csv(fullpath_test, encoding='latin1')
     #print(ratings_liveUser.head(20))

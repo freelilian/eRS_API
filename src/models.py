@@ -27,7 +27,7 @@ class Item:
     """
     Represents a generic item.
     """
-    item_id: str
+    movielensId: str
     title: str
     genre: str
 
@@ -38,8 +38,16 @@ class Rating:
     User's rating for an item. `rating` should be a number
     between 1 and 5 (both inclusive).
     """
-    item_id: str
+    movielensId: str
     rating: Literal[1,2,3,4,5]
+
+@dataclass
+class Recommendation:
+    """
+    User's rating for an item. `rating` should be a number
+    between 1 and 5 (both inclusive).
+    """
+    movielensId: str
 
 
 @dataclass
@@ -48,7 +56,7 @@ class Preference:
     Represents a predicted or actual preference. `categories`
     is a list of classes that an item belongs to.
     """
-    item_id: str
+    movielensId: str
     # categories: List[Literal["CONTROVERSIAL", ""]] # todo more
     categories: Literal["top_N", "diversified_by_latent_feature", "diversified_by_weighted_latent_feature", "diversified_by_emotions", "diversified_by_weighted_emotions"] # todo more
 
@@ -58,7 +66,7 @@ class LatentFeature:
     """
     Represents the latent feature values for visualization
     """
-    item_id: str
+    movielensId: str
     feature1: float
     feature2: float
  
@@ -67,7 +75,7 @@ class EmotionalSignature:
     """
     Represents the latent feature values for visualization
     """
-    item_id: str
+    movielensId: str
     # emotion1: float
     # emotion2: float 
     ############
@@ -81,7 +89,7 @@ class Event:
     """
     Represents an interaction with an item.
     """
-    item_id: str
+    movielensId: str
     event_type: Literal["hover", "click"]
     duration: int
     enter_time: int
