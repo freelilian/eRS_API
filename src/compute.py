@@ -13,10 +13,9 @@ import numpy as np
 import os
 
 def get_RSSA_preds(ratings: List[Rating], user_id) -> pd.DataFrame:
-
-    new_ratings = pd.Series(rating.rating for rating in ratings)
     rated_items = np.array([np.int64(rating.movielensId) for rating in ratings])
-    
+    new_ratings = pd.Series(np.array([np.float64(rating.rating) for rating in ratings]), index = rated_items)    
+
     data_path = os.path.join(os.path.dirname(__file__), './eRSalgs/data/eRS_item_popularity.csv')
     eRS_item_popularity = pd.read_csv(data_path) 
     
@@ -300,5 +299,17 @@ if __name__ == '__main__':
     emotions = get_features_for_viz(recommendations, 'emotional signature')
     print(emotions)    
     print()
-    
+    '''
+    RSSA_team = ['Bart', 'Sushmita', 'Shahan', 'Aru', 'Mitali', 'Yash']
+    for liveUserID in RSSA_team:
+        fullpath_test = os.path.join(os.path.dirname(__file__), 'eRSalgs/testing_rating_rated_items_extracted/ratings_set6_rated_only_' + liveUserID + '.csv')
+        ratings_liveUser = pd.read_csv(fullpath_test, encoding='latin1')
+        ratings = []
+        for index, row in ratings_liveUser.iterrows():
+            ratings.append(Rating(row['item'], row['rating']))
+        recommendations = predict_user_topN(ratings, liveUserID)
+        for rec in recommendations:
+            print(rec.movielensId, end = ', ')
+        print()
+    '''    
     
